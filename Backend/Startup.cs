@@ -111,6 +111,8 @@ namespace Backend
             });
             app.UseAuthentication();
 
+            app.UseAuthentication();
+
             app.UseMvc();
         }
     }
