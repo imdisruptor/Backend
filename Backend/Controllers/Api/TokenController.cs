@@ -98,6 +98,4 @@ namespace Backend.Controllers.Api
             return await Task.FromResult<ClaimsIdentity>(null);
         }
     }
-
-
 }

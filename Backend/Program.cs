@@ -42,7 +42,7 @@ namespace Backend
                 catch(Exception ex)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "ERror pri initialization DATABASE Eeeee");
+                    logger.LogError(ex, "Error pri initialization DATABASE Eeeee");
                 }
             }
 

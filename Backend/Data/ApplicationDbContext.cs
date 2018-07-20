@@ -32,7 +32,4 @@ namespace Backend.Data
         }
     }
     //class VladAgressorInitilizer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
-
-
-
 }

@@ -110,9 +110,7 @@ namespace Backend
                     template: "{controller=Test}/{action=Index}/{id?}");
             });
             app.UseAuthentication();
-
-            app.UseAuthentication();
-
+            
             app.UseMvc();
         }
     }

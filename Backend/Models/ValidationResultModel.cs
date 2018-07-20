@@ -35,5 +35,4 @@ namespace Backend.Models
             Message = message;
         }
     }
-
 }
