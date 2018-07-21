@@ -31,5 +31,4 @@ namespace Backend.Data
             base.OnModelCreating(builder);
         }
     }
-    //class VladAgressorInitilizer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
 }

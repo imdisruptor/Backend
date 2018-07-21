@@ -1,4 +1,6 @@
 ﻿using Backend.Models;
+using Backend.Models.Entities;
+using System.Threading.Tasks;
 
 namespace Backend.Services.Interfaces
 {
@@ -8,7 +10,7 @@ namespace Backend.Services.Interfaces
         IdList GetMessages(string ownerId);
         void DeleteCatalog(string id);
         void DeleteMessage(string id);
-        void CreateCatalog(string ownerId, string name);
+        Task CreateCatalogAsync(Catalog catalog);
         void CreateMessage(string ownerId, string name, string text);
     }
 }

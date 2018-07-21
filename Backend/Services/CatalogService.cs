@@ -1,5 +1,6 @@
 ﻿using Backend.Data;
 using Backend.Models;
+using Backend.Models.Entities;
 using Backend.Services.Interfaces;
 using System.Threading.Tasks;
 
@@ -19,9 +20,6 @@ namespace Backend.Services
         public IdList GetCatalogs(string ownerId)
         {
             IdList result = new IdList();
-            /*
-
-            */
             return result;
         }
 
@@ -46,9 +44,10 @@ namespace Backend.Services
 
         }
 
-        public void CreateCatalog(string ownerId, string name)
+        public async Task CreateCatalogAsync(Catalog catalog)
         {
-
+            _context.Add(catalog);
+            await _context.SaveChangesAsync();
         }
 
         public void CreateMessage(string ownerId, string name, string text)
