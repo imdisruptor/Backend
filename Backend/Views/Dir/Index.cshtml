@@ -10,7 +10,7 @@
 @if (ViewData["id"].Equals("non"))
 {
     <p>
-        <a>Вернкться в родительский каталог</a>
+        <a>Самый родительский каталог</a>
     </p>
     <p>
         <a>Выебрите каталог</a>
@@ -19,7 +19,7 @@
         @foreach (var item in Model)
         {
             <li>
-                <a href="~/Dir/Index/@item.Id">@item.Title</a>
+                <a href="~/Dir/Edit/@item.Id">@item.Title</a>
             </li>
         }
     </ol>
@@ -36,13 +36,13 @@ else
             break;
         }
     }
-    string parr="";
+    string parr = "";
     if (catalog.ParentCatalog != null)
     {
-        parr =catalog.ParentCatalogId;
+        parr = catalog.ParentCatalogId;
     }
 
-    <a href="~/Dir/Index/@parr" >Вернуться в родительский каталог</a>
+    <a href="~/Dir/Index/@parr">Вернуться в родительский каталог</a>
     <h2>Дочерние каталоги</h2>
     @foreach (var t in catalog.ChildCatalogs)
     {

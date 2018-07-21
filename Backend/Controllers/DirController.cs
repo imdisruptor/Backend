@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers
 {
+    //[Authorize(Roles = "ADMIN, USER")]
     public class DirController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,8 +27,12 @@ namespace Backend.Controllers
             if (id == null)
                 ViewData["id"] = "non";
             else ViewData["id"] = id;
-            var applicationDbContext = _context.Catalogs.Include(c => c.ParentCatalog).Include(c => c.Messages).Include(c=>c.ChildCatalogs);
+            var applicationDbContext = _context.Catalogs.Include(c => c.ParentCatalog).Include(c => c.Messages).Include(c => c.ChildCatalogs);
             return View(await applicationDbContext.ToListAsync());
+            //var applicationDbContext = _context.Catalogs.Include(c => c.ParentCatalog)
+            //    .Where(p=>p.Id==id)
+            //    .Include(c => c.Messages).Include(c=>c.ChildCatalogs);
+            //return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Dir/Details/5

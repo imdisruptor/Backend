@@ -59,59 +59,53 @@ namespace Backend
     {
         public static async Task Initialize(ApplicationDbContext context)
         {
-            if (!context.Messages.Any() && !context.Catalogs.Any())
-            {
-                //Catalog catalog = new Catalog
-                //{
-                //    Title = "Second catalog",
-                //    Messages = new List<Message>(),
-                //    ChildCatalogs = new List<Catalog>()
-                //};
-                //context.Catalogs.Add(catalog);
+            //Catalog catalog = new Catalog
+            //{
+            //    Title = "Second Catalog",
+            //    ChildCatalogs = new List<Catalog>(),
+            //    Messages = new List<Message>()
+            //};
+            //    context.Catalogs.Add(catalog);
+            //context.Messages.Add(new Message
+            //{
+            //    Catalog = catalog,
+            //    CatalogId = catalog.Id,
+            //    DateTime = DateTime.Now,
+            //    Text = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+            //    Subject = "Lorem ipsum dolor"
+            //});
+            //context.Catalogs.ToList()[0].ChildCatalogs.Add(context.Catalogs.ToList()[1]);
+            //context.Catalogs.ToList()[1].ParentCatalog = context.Catalogs.ToList()[0];
+            //context.Catalogs.ToList()[1].ParentCatalogId = context.Catalogs.ToList()[0].Id;
+            await context.SaveChangesAsync();
+            //if (true)//!context.Messages.Any() && !context.Catalogs.Any())
+            //{
+            //    Catalog catalog = new Catalog
+            //    {
+            //        Title = "Second Catalog",
+            //        ChildCatalogs = new List<Catalog>(),
+            //        Messages = new List<Message>(),
+            //        ParentCatalog = context.Catalogs.ToList()[0],
+            //        ParentCatalogId = context.Catalogs.ToList()[0].Id
 
-                //context.Messages.Add(new Message
-                //{
-                //    Catalog = catalog,
-                //    CatalogId = catalog.Id,
-                //    DateTime = DateTime.Now,
-                //    Text = "kdfjx;lxkdjf;lxkjdf;lj",
-                //    Subject = "Education"
-                //});
-                //context.Messages.Add(new Message
-                //{
-                //    Catalog = catalog,
-                //    CatalogId = catalog.Id,
-                //    DateTime = DateTime.Now,
-                //    Text = "Moscow is the capital of R",
-                //    Subject = "Education"
-                //});
-                //context.Messages.Add(new Message
-                //{
-                //    Catalog = catalog,
-                //    CatalogId = catalog.Id,
-                //    DateTime = DateTime.Now,
-                //    Text = "How do.....",
-                //    Subject = "Education"
-                //});
-                //context.Messages.Add(new Message
-                //{
-                //    Catalog = catalog,
-                //    CatalogId = catalog.Id,
-                //    DateTime = DateTime.Now,
-                //    Text = "TExttttttttttttt",
-                //    Subject = "Subject"
-                //});
-                //context.Messages.Add(new Message
-                //{
-                //    Catalog = catalog,
-                //    CatalogId = catalog.Id,
-                //    DateTime = DateTime.Now,
-                //    Text = "asdasdadasdasdadasdasdasd",
-                //    Subject = "Sibject"
-                //});
-                await context.SaveChangesAsync();
-            }
-            
+            //    };
+            //    context.Catalogs.Add(catalog);
+            //    context.Catalogs.ToList()[0].ChildCatalogs
+            //        .Add(context.Catalogs.ToList()[1]);
+            //    context.Messages.AddRange(new Message
+            //    {
+            //        Catalog = catalog,
+            //        CatalogId = catalog.Id,
+            //        DateTime = DateTime.Now,
+            //        Text = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+            //        Subject = "Lorem ipsum dolor"
+
+            //    }
+            //    );
+
+            //    await context.SaveChangesAsync();
+            //}
+
         }
     }
 }
