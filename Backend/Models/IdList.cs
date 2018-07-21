@@ -1,6 +1,9 @@
-﻿using System;
+﻿using System.Collections.Generic;
 
-public class IdList
+namespace Backend.Models
 {
-	public IdList<string> idList { get; set; }
+    public class IdList
+    {
+	    public List<string> Directory { get; set; }
+    }
 }

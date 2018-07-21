@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Backend.Models;
 
-public class ICatalogService
+namespace Backend.Services.Interfaces
 {
-	public ICatalogService()
-	{
+    public interface ICatalogService
+    {
         IdList GetCatalogs(string ownerId);
         IdList GetMessages(string ownerId);
-        Task DeleteCatalog(string id);
+        void DeleteCatalog(string id);
         void DeleteMessage(string id);
         void CreateCatalog(string ownerId, string name);
         void CreateMessage(string ownerId, string name, string text);
-	}
+    }
 }

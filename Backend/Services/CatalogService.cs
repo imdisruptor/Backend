@@ -1,53 +1,59 @@
-﻿using System;
+﻿using Backend.Data;
+using Backend.Models;
+using Backend.Services.Interfaces;
+using System.Threading.Tasks;
 
-public class CatalogService : ICatalogService
+namespace Backend.Services
 {
-    private readonly string _curentCatalog;
-    private readonly ApplicationDbContext _context;
-
-    public CatalogService(string curentCatalog, ApplicationDbContext context)
-	{
-        _context = context;
-        _curentCatalog = curentCatalog;
-	}
-
-    public IdList GetCatalogs(string ownerId)
+    public class CatalogService : ICatalogService
     {
-        IdList result;
-        /*
-        
-        */
-        return result;
-    }
+        private readonly string _curentCatalog;
+        private readonly ApplicationDbContext _context;
 
-    public IdList GetMessages(string ownerId)
-    {
-        IdList result;
-        /*
-        
-        */
-        return result;
-    }
+        public CatalogService(string curentCatalog, ApplicationDbContext context)
+        {
+            _context = context;
+            _curentCatalog = curentCatalog;
+        }
 
-    public async Task DeleteCatalog(string id)
-    {
-        /*
-         * рекурсивно удалять всех сынков и вложенные документы
-         */
-    }
+        public IdList GetCatalogs(string ownerId)
+        {
+            IdList result = new IdList();
+            /*
 
-    void DeleteMessage(string id)
-    {
+            */
+            return result;
+        }
 
-    }
+        public IdList GetMessages(string ownerId)
+        {
+            IdList result = new IdList();
+            /*
 
-    void CreateCatalog(string ownerId, string name)
-    {
+            */
+            return result;
+        }
 
-    }
+        public void DeleteCatalog(string id)
+        {
+            /*
+             * рекурсивно удалять всех сынков и вложенные документы
+             */
+        }
 
-    void CreateMessage(string ownerId, string name, string text)
-    {
+        public void DeleteMessage(string id)
+        {
 
+        }
+
+        public void CreateCatalog(string ownerId, string name)
+        {
+
+        }
+
+        public void CreateMessage(string ownerId, string name, string text)
+        {
+
+        }
     }
 }
