@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
+using Backend.Exceptions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Backend.Data;
@@ -13,7 +15,9 @@ using Backend.Services;
 using Backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +26,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace Backend
 {
@@ -93,16 +98,37 @@ namespace Backend
 
             services.AddSingleton<IJwtService, JwtService>();
 
-            services.AddAutoMapper(typeof(ViewModelToEntityProfile));
+            services.AddAutoMapper(typeof(ViewModelToEntityProfile), typeof(EntityToViewModelProfile));
+            services.AddTransient<ICatalogService, CatalogService>();
             services.AddMvc();
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
+            app.UseExceptionHandler(errorApp =>
             {
-                app.UseDeveloperExceptionPage();
-            }
+                errorApp.Run(async context =>
+                {
+                    var error = context.Features.Get<IExceptionHandlerFeature>();
+
+                    if (error != null)
+                    {
+                        var exception = error.Error;
+                        var code = HttpStatusCode.InternalServerError;
+
+                        if (exception is NotFoundException) code = HttpStatusCode.NotFound;
+                        else if (exception is ArgumentException) code = HttpStatusCode.BadRequest;
+
+                        var result = JsonConvert.SerializeObject(new { Message = exception.Message });
+
+                        context.Response.ContentType = "application/json";
+                        context.Response.StatusCode = (int)code;
+
+                        await context.Response.WriteAsync(result);
+                    }
+                });
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

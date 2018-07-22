@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Backend.Models;
 using Backend.Models.Entities;
 using Backend.ViewModels;
 using System;
@@ -14,6 +15,19 @@ namespace Backend.Mappings
         {
             CreateMap<RegisterViewModel, ApplicationUser>()
                 .ForMember(au => au.UserName, map => map.MapFrom(rvm => rvm.Email));
+            CreateMap<CatalogViewModel, Catalog>()
+                .ForMember(c => c.ChildCatalogs, map => map.MapFrom(cvm => cvm.Catalogs));
+            CreateMap<MessageViewModel, Message>();
+        }
+    }
+
+    public class EntityToViewModelProfile : Profile
+    {
+        public EntityToViewModelProfile()
+        {
+            CreateMap<Catalog, CatalogViewModel>()
+                .ForMember(cvm => cvm.Catalogs, map => map.MapFrom(c => c.ChildCatalogs));
+            CreateMap<Message, MessageViewModel>();
         }
     }
 }

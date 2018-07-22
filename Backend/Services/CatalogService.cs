@@ -1,4 +1,5 @@
 ﻿using Backend.Data;
+using Backend.Exceptions;
 using Backend.Models;
 using Backend.Models.Entities;
 using Backend.Services.Interfaces;
@@ -8,16 +9,14 @@ namespace Backend.Services
 {
     public class CatalogService : ICatalogService
     {
-        private readonly string _curentCatalog;
         private readonly ApplicationDbContext _context;
 
-        public CatalogService(string curentCatalog, ApplicationDbContext context)
+        public CatalogService(ApplicationDbContext context)
         {
             _context = context;
-            _curentCatalog = curentCatalog;
         }
 
-        public IdList GetCatalogs(string ownerId)
+        /*public IdList GetCatalogs(string ownerId)
         {
             IdList result = new IdList();
             return result;
@@ -26,11 +25,9 @@ namespace Backend.Services
         public IdList GetMessages(string ownerId)
         {
             IdList result = new IdList();
-            /*
-
-            */
+            
             return result;
-        }
+        }*/
 
         public void DeleteCatalog(string id)
         {
@@ -44,9 +41,39 @@ namespace Backend.Services
 
         }
 
+        public Catalog FindCatalogId(string id)
+        {
+            var catalog = _context.Catalogs.Find(id);
+
+            if (catalog == null)
+            {
+                throw new NotFoundException();
+            }
+
+            return catalog;
+        }
+
         public async Task CreateCatalogAsync(Catalog catalog)
         {
             _context.Add(catalog);
+            await _context.SaveChangesAsync();
+        }
+        public async Task EditCatalogAsync(Catalog catalog)
+        {
+            var oldCatalog = _context.Catalogs.Find(catalog.Id);
+            if(oldCatalog==null)
+            {
+                throw new NotFoundException();
+            }
+            if (!catalog.Title.Equals(oldCatalog.Title) && !string.IsNullOrWhiteSpace(catalog.Title)) 
+            {
+                oldCatalog.Title = catalog.Title;
+            }
+            //Изменение родительского каталога
+            //if (!catalog.ParentCatalogId.Equals(oldCatalog.ParentCatalogId) && !string.IsNullOrWhiteSpace(catalog.Title))
+            //{
+            //    oldCatalog.Title = catalog.Title;
+            //}
             await _context.SaveChangesAsync();
         }
 

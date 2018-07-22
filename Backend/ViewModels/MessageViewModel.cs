@@ -1,13 +1,23 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Backend.Models
+namespace Backend.ViewModels
 {
     public class MessageViewModel
     {
-        public string MessageTitle { get; set; }
-        public string MessageText { get; set; }
+        public string Id { get; set; }
+
+        public string Subject { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string Text { get; set; }
+
+        public string CatalogId { get; set; }
     }
 }

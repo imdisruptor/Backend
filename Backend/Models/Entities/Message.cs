@@ -9,7 +9,7 @@ namespace Backend.Models.Entities
     {
         public string Subject { get; set; }
         public string Text { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         public string CatalogId { get; set; }
         public Catalog Catalog { get; set; }
