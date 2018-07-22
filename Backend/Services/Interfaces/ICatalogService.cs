@@ -6,7 +6,7 @@ namespace Backend.Services.Interfaces
 {
     public interface ICatalogService
     {
-        Task EditCatalogAsync(Catalog catalog);
+        Task EditCatalogAsync(string catalogId, Catalog catalog);
         Catalog FindCatalogId(string id);
         void DeleteCatalog(string id);
         void DeleteMessage(string id);

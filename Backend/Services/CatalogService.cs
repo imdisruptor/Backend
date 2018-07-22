@@ -58,14 +58,14 @@ namespace Backend.Services
             _context.Add(catalog);
             await _context.SaveChangesAsync();
         }
-        public async Task EditCatalogAsync(Catalog catalog)
+        public async Task EditCatalogAsync(string catalogId, Catalog catalog)
         {
-            var oldCatalog = _context.Catalogs.Find(catalog.Id);
+            var oldCatalog = _context.Catalogs.Find(catalogId);
             if(oldCatalog==null)
             {
                 throw new NotFoundException();
             }
-            if (!catalog.Title.Equals(oldCatalog.Title) && !string.IsNullOrWhiteSpace(catalog.Title)) 
+            if (!string.IsNullOrWhiteSpace(catalog.Title)) 
             {
                 oldCatalog.Title = catalog.Title;
             }

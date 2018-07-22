@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers.Api
 {
+    [Route("[controller]")]
     public class CatalogsController : Controller
     {
         private readonly ICatalogService _catalogService;
@@ -22,7 +23,7 @@ namespace Backend.Controllers.Api
             _mapper = mapper;
         }
 
-        [HttpPost]
+        [HttpPost("")]
         public async Task<IActionResult> CreateCatalog([FromBody, Bind("Title", "ParentCatalogId")]CatalogViewModel model)
         {
             if (!ModelState.IsValid)
@@ -43,9 +44,9 @@ namespace Backend.Controllers.Api
 
             return Created("", _mapper.Map<CatalogViewModel>(catalog));
         }
-        [HttpPost]
-        public async Task<IActionResult> EditCatalog(CatalogViewModel model)
-        {
+        [HttpPut("{catalogId}")]
+        public async Task<IActionResult> EditCatalog(string catalogId, [FromBody, Bind("Title")]CatalogViewModel model)
+        {                               
             if(!ModelState.IsValid)
             {
                 return BadRequest();
@@ -53,7 +54,7 @@ namespace Backend.Controllers.Api
 
             var catalog = _mapper.Map<Catalog>(model);
 
-            await _catalogService.EditCatalogAsync(catalog);
+            await _catalogService.EditCatalogAsync(catalogId, catalog);
 
             return Ok(_mapper.Map<CatalogViewModel>(catalog));
         }
