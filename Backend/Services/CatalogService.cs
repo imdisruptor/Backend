@@ -69,6 +69,15 @@ namespace Backend.Services
             {
                 oldCatalog.Title = catalog.Title;
             }
+            if(!string.IsNullOrWhiteSpace(catalog.ParentCatalogId))
+            {
+                var newCatalog = _context.Catalogs.Find(catalog.ParentCatalogId);
+                if (newCatalog == null)
+                {
+                    throw new NotFoundException();
+                }
+                oldCatalog.ParentCatalog = newCatalog;
+            }
             //Изменение родительского каталога
             //if (!catalog.ParentCatalogId.Equals(oldCatalog.ParentCatalogId) && !string.IsNullOrWhiteSpace(catalog.Title))
             //{
@@ -77,8 +86,16 @@ namespace Backend.Services
             await _context.SaveChangesAsync();
         }
 
-        public void CreateMessage(string ownerId, string name, string text)
+        public async Task CreateMessage(string catalogId, Message message)
         {
+            var catalog = _context.Catalogs.Find(catalogId);
+            if(catalog == null)
+            {
+                throw new NotFoundException();
+            }
+            catalog.Messages.Add(message);
+            _context.Messages.Add(message);
+            await _context.SaveChangesAsync();
 
         }
     }

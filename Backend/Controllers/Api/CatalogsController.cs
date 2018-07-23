@@ -45,7 +45,7 @@ namespace Backend.Controllers.Api
             return Created("", _mapper.Map<CatalogViewModel>(catalog));
         }
         [HttpPut("{catalogId}")]
-        public async Task<IActionResult> EditCatalog(string catalogId, [FromBody, Bind("Title")]CatalogViewModel model)
+        public async Task<IActionResult> EditCatalog(string catalogId, [FromBody, Bind("Title","ParentCatalogId")]CatalogViewModel model)
         {                               
             if(!ModelState.IsValid)
             {
@@ -58,5 +58,6 @@ namespace Backend.Controllers.Api
 
             return Ok(_mapper.Map<CatalogViewModel>(catalog));
         }
+        
     }
 }
