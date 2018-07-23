@@ -15,5 +15,11 @@ namespace Backend.Models.Entities
         public Catalog ParentCatalog { get; set; }
 
         public List<Catalog> ChildCatalogs { get; set; }
+
+        public Catalog()
+        {
+            ChildCatalogs = new List<Catalog>();
+            Messages = new List<Message>();
+        }
     }
 }

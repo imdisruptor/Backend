@@ -3,6 +3,8 @@ using Backend.Exceptions;
 using Backend.Models;
 using Backend.Models.Entities;
 using Backend.Services.Interfaces;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Backend.Services
@@ -16,29 +18,11 @@ namespace Backend.Services
             _context = context;
         }
 
-        /*public IdList GetCatalogs(string ownerId)
-        {
-            IdList result = new IdList();
-            return result;
-        }
-
-        public IdList GetMessages(string ownerId)
-        {
-            IdList result = new IdList();
-            
-            return result;
-        }*/
-
         public void DeleteCatalog(string id)
         {
             /*
              * рекурсивно удалять всех сынков и вложенные документы
              */
-        }
-
-        public void DeleteMessage(string id)
-        {
-
         }
 
         public Catalog FindCatalogId(string id)
@@ -78,23 +62,65 @@ namespace Backend.Services
                 }
                 oldCatalog.ParentCatalog = newCatalog;
             }
-            //Изменение родительского каталога
-            //if (!catalog.ParentCatalogId.Equals(oldCatalog.ParentCatalogId) && !string.IsNullOrWhiteSpace(catalog.Title))
-            //{
-            //    oldCatalog.Title = catalog.Title;
-            //}
             await _context.SaveChangesAsync();
         }
 
-        public async Task CreateMessage(string catalogId, Message message)
+        public async Task CreateMessage( Message message)
         {
-            var catalog = _context.Catalogs.Find(catalogId);
+            var catalog = _context.Catalogs.Find(message.CatalogId);
             if(catalog == null)
             {
                 throw new NotFoundException();
             }
+            message.CreatedAt = DateTime.Now;
             catalog.Messages.Add(message);
             _context.Messages.Add(message);
+            await _context.SaveChangesAsync();
+
+        }
+        public async Task EditMessage(string messageId,Message message)
+        {
+            if (string.IsNullOrEmpty(messageId))
+                throw new NotFoundException();
+
+            var oldMessage = _context.Messages.Find(messageId);
+
+            if(oldMessage == null)
+            {
+                throw new NotFoundException();
+            }
+
+            var catalog = _context.Catalogs.Find(message.CatalogId);
+            if(catalog != null)
+            {
+                oldMessage.Catalog = catalog;
+                oldMessage.CatalogId = catalog.Id;
+            }
+
+            if(!string.IsNullOrWhiteSpace(message.Subject))
+            {
+                oldMessage.Subject = message.Subject;
+            }
+
+            if(!string.IsNullOrWhiteSpace(message.Text))
+            {
+                oldMessage.Text = message.Text;
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteMessage(string id)
+        {
+            var message = _context.Messages.FirstOrDefault(m => m.Id == id);
+
+            if (message == null)
+            {
+                throw new NotFoundException();
+            }
+
+            _context.Messages.Remove(message);
+
             await _context.SaveChangesAsync();
 
         }

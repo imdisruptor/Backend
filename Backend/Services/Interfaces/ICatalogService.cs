@@ -9,8 +9,9 @@ namespace Backend.Services.Interfaces
         Task EditCatalogAsync(string catalogId, Catalog catalog);
         Catalog FindCatalogId(string id);
         void DeleteCatalog(string id);
-        void DeleteMessage(string id);
         Task CreateCatalogAsync(Catalog catalog);
-        Task CreateMessage(string catalogId, Message message);
+        Task CreateMessage(Message message);
+        Task EditMessage(string messageId, Message message);
+        Task DeleteMessage(string id);
     }
 }
