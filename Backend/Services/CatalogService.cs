@@ -49,22 +49,6 @@ namespace Backend.Services
 
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteMessage(string id)
-        {
-            var message = _context.Messages.FirstOrDefault(m => m.Id == id);
-
-            if(message!=null)
-            {
-                var catalog = _context.Catalogs.Include(m => m.Messages).FirstOrDefault(c => c.Id == message.CatalogId);
-                if(catalog == null)
-                {
-                    //Какое-то другое исключение должно быть
-                    throw new NotFoundException();
-                }
-                catalog.Messages.Remove(message);
-            }
-            await _context.SaveChangesAsync();
-        }
 
         public Catalog GetCatalogWithMessages(string catalogId)
         {
@@ -164,20 +148,20 @@ namespace Backend.Services
             await _context.SaveChangesAsync();
         }
 
-        //public async Task DeleteMessage(string id)
-        //{
-        //    var message = _context.Messages.FirstOrDefault(m => m.Id == id);
+        public async Task DeleteMessage(string id)
+        {
+            var message = _context.Messages.FirstOrDefault(m => m.Id == id);
 
-        //    if (message == null)
-        //    {
-        //        throw new NotFoundException();
-        //    }
+            if (message == null)
+            {
+                throw new NotFoundException();
+            }
 
-        //    _context.Messages.Remove(message);
+            _context.Messages.Remove(message);
 
-        //    await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-        //}
+        }
 
         public Message GetMessage(string id)
         {

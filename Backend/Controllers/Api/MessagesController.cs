@@ -67,7 +67,8 @@ namespace Backend.Controllers.Api
         {
             await _catalogService.DeleteMessage(messageId);
 
-            return NotFound();
+            //Возможно тут должно быть NotFound
+            return Ok();
         }
     }
 }
