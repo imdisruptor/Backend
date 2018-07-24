@@ -24,6 +24,14 @@ namespace Backend.Controllers.Api
             _mapper = mapper;
         }
 
+        [HttpGet("{messageId}")]
+        public IActionResult GetMessage(string messageId)
+        {
+             Message message = _catalogService.GetMessage(messageId);
+
+            return Ok(_mapper.Map<MessageViewModel>(message));
+        }
+
         [HttpPost("")]
         public async Task<IActionResult> CreateMessage([FromBody, Bind("Text", "CatalogId", "Subject")]MessageViewModel model)
         {

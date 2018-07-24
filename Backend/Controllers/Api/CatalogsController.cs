@@ -23,6 +23,22 @@ namespace Backend.Controllers.Api
             _mapper = mapper;
         }
 
+        [HttpGet("GetMessages/{id}")]
+        public ActionResult GetMessages(string id)
+        {
+            var catalog = _catalogService.GetCatalogWithMessages(id);
+
+            return Ok(_mapper.Map<CatalogViewModel>(catalog));
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult GetCatalog(string id)
+        {
+            var catalog = _catalogService.GetCatalog(id);
+
+            return Ok(_mapper.Map<CatalogViewModel>(catalog));
+        }
+
         [HttpPost("")]
         public async Task<IActionResult> CreateCatalog([FromBody, Bind("Title", "ParentCatalogId")]CatalogViewModel model)
         {

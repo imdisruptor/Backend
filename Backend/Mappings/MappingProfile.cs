@@ -16,7 +16,8 @@ namespace Backend.Mappings
             CreateMap<RegisterViewModel, ApplicationUser>()
                 .ForMember(au => au.UserName, map => map.MapFrom(rvm => rvm.Email));
             CreateMap<CatalogViewModel, Catalog>()
-                .ForMember(c => c.ChildCatalogs, map => map.MapFrom(cvm => cvm.Catalogs));
+                .ForMember(c => c.ChildCatalogs, map => map.MapFrom(cvm => cvm.Catalogs)).
+                ForMember(c => c.Messages, map => map.MapFrom(cvm => cvm.MessageViewModel));
             CreateMap<MessageViewModel, Message>();
         }
     }
@@ -26,7 +27,8 @@ namespace Backend.Mappings
         public EntityToViewModelProfile()
         {
             CreateMap<Catalog, CatalogViewModel>()
-                .ForMember(cvm => cvm.Catalogs, map => map.MapFrom(c => c.ChildCatalogs));
+                .ForMember(cvm => cvm.Catalogs, map => map.MapFrom(c => c.ChildCatalogs))
+                .ForMember(cvm => cvm.MessageViewModel, map => map.MapFrom(c => c.Messages));
             CreateMap<Message, MessageViewModel>();
         }
     }

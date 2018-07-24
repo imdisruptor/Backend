@@ -4,9 +4,10 @@ using Backend.Models;
 using Backend.Models.Entities;
 using Backend.Services.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
 namespace Backend.Services
 {
     public class CatalogService : ICatalogService
@@ -25,9 +26,21 @@ namespace Backend.Services
              */
         }
 
+        public Catalog GetCatalogWithMessages(string catalogId)
+        {
+            var catalog = _context.Catalogs.Include(m=>m.Messages).FirstOrDefault(c => c.Id == catalogId);
+
+            if (catalog == null)
+            {
+                throw new NotFoundException();
+            }
+
+            return catalog;
+        }
+
         public Catalog FindCatalogId(string id)
         {
-            var catalog = _context.Catalogs.Find(id);
+            var catalog = _context.Catalogs.FirstOrDefault(c => c.Id == id);
 
             if (catalog == null)
             {
@@ -123,6 +136,29 @@ namespace Backend.Services
 
             await _context.SaveChangesAsync();
 
+        }
+
+        public Message GetMessage(string id)
+        {
+            var mes = _context.Messages.FirstOrDefault(m => m.Id == id);
+            if(mes == null)
+            {
+                throw new NotFoundException();
+            }
+
+            return mes;
+        }
+
+        public Catalog GetCatalog(string id)
+        {
+            var catalog = _context.Catalogs.Include(m=>m.ChildCatalogs).FirstOrDefault(m => m.Id == id);
+
+            if(catalog == null )
+            {
+                throw new NotFoundException();
+            }
+
+            return catalog;
         }
     }
 }
