@@ -19,11 +19,51 @@ namespace Backend.Services
             _context = context;
         }
 
-        public void DeleteCatalog(string id)
+        private void DeleteCatalogRec(Catalog catalog)
+        {
+            if(catalog == null)
+            {
+                return;
+            }
+            foreach(var m in catalog.Messages)
+            {
+                _context.Messages.Remove(m);
+            }
+            catalog.Messages.Clear();
+            foreach(var c in catalog.ChildCatalogs)
+            {
+                DeleteCatalogRec(_context.Catalogs.Include(cat=>cat.ChildCatalogs).Include(m=>m.Messages).FirstOrDefault(cat=> cat.Id==c.Id));
+            }
+            catalog.ChildCatalogs.Clear();
+            _context.Catalogs.Remove(catalog);
+        }
+
+        public async Task DeleteCatalog(string id)
         {
             /*
              * рекурсивно удалять всех сынков и вложенные документы
              */
+            var catalog = _context.Catalogs.Include(m=>m.Messages).Include(c=>c.ChildCatalogs).FirstOrDefault(c=>c.Id==id);
+
+            DeleteCatalogRec(catalog);
+
+            await _context.SaveChangesAsync();
+        }
+        public async Task DeleteMessage(string id)
+        {
+            var message = _context.Messages.FirstOrDefault(m => m.Id == id);
+
+            if(message!=null)
+            {
+                var catalog = _context.Catalogs.Include(m => m.Messages).FirstOrDefault(c => c.Id == message.CatalogId);
+                if(catalog == null)
+                {
+                    //Какое-то другое исключение должно быть
+                    throw new NotFoundException();
+                }
+                catalog.Messages.Remove(message);
+            }
+            await _context.SaveChangesAsync();
         }
 
         public Catalog GetCatalogWithMessages(string catalogId)
@@ -55,9 +95,10 @@ namespace Backend.Services
             _context.Add(catalog);
             await _context.SaveChangesAsync();
         }
+
         public async Task EditCatalogAsync(string catalogId, Catalog catalog)
         {
-            var oldCatalog = _context.Catalogs.Find(catalogId);
+            var oldCatalog = _context.Catalogs.FirstOrDefault(c=>c.Id==catalogId);
             if(oldCatalog==null)
             {
                 throw new NotFoundException();
@@ -123,20 +164,20 @@ namespace Backend.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteMessage(string id)
-        {
-            var message = _context.Messages.FirstOrDefault(m => m.Id == id);
+        //public async Task DeleteMessage(string id)
+        //{
+        //    var message = _context.Messages.FirstOrDefault(m => m.Id == id);
 
-            if (message == null)
-            {
-                throw new NotFoundException();
-            }
+        //    if (message == null)
+        //    {
+        //        throw new NotFoundException();
+        //    }
 
-            _context.Messages.Remove(message);
+        //    _context.Messages.Remove(message);
 
-            await _context.SaveChangesAsync();
+        //    await _context.SaveChangesAsync();
 
-        }
+        //}
 
         public Message GetMessage(string id)
         {

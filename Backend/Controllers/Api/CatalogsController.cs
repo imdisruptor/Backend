@@ -74,6 +74,14 @@ namespace Backend.Controllers.Api
 
             return Ok(_mapper.Map<CatalogViewModel>(catalog));
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCatalog(string id)
+        {
+            await _catalogService.DeleteCatalog(id);
+
+            return Ok();
+        }
         
     }
 }
