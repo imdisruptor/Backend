@@ -101,10 +101,17 @@ namespace Backend
             services.AddAutoMapper(typeof(ViewModelToEntityProfile), typeof(EntityToViewModelProfile));
             services.AddTransient<ICatalogService, CatalogService>();
             services.AddMvc();
+            services.AddCors();
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors(build => {
+                build.AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin()
+                .AllowCredentials();
+            });
             app.UseExceptionHandler(errorApp =>
             {
                 errorApp.Run(async context =>

@@ -7,6 +7,7 @@ using Backend.Models;
 using Backend.Models.Entities;
 using Backend.Services.Interfaces;
 using Backend.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers.Api
@@ -23,6 +24,7 @@ namespace Backend.Controllers.Api
             _mapper = mapper;
         }
 
+        [Authorize(Roles = RoleModel.Admin + ", " + RoleModel.User)]
         [HttpGet("GetMessages/{id}")]
         public ActionResult GetMessages(string id)
         {
@@ -31,6 +33,7 @@ namespace Backend.Controllers.Api
             return Ok(_mapper.Map<CatalogViewModel>(catalog));
         }
 
+        [Authorize(Roles = RoleModel.Admin + ", " + RoleModel.User)]
         [HttpGet("{id}")]
         public ActionResult GetCatalog(string id)
         {
@@ -39,6 +42,7 @@ namespace Backend.Controllers.Api
             return Ok(_mapper.Map<CatalogViewModel>(catalog));
         }
 
+        [Authorize(Roles = RoleModel.Admin)]
         [HttpPost("")]
         public async Task<IActionResult> CreateCatalog([FromBody, Bind("Title", "ParentCatalogId")]CatalogViewModel model)
         {
@@ -60,6 +64,8 @@ namespace Backend.Controllers.Api
 
             return Created("", _mapper.Map<CatalogViewModel>(catalog));
         }
+
+        [Authorize(Roles = RoleModel.Admin)]
         [HttpPut("{catalogId}")]
         public async Task<IActionResult> EditCatalog(string catalogId, [FromBody, Bind("Title","ParentCatalogId")]CatalogViewModel model)
         {                               
@@ -75,6 +81,7 @@ namespace Backend.Controllers.Api
             return Ok(_mapper.Map<CatalogViewModel>(catalog));
         }
 
+        [Authorize(Roles = RoleModel.Admin)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCatalog(string id)
         {

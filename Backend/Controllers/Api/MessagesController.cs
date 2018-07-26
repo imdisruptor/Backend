@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Backend.Models;
 using Backend.Models.Entities;
 using Backend.Services.Interfaces;
 using Backend.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +26,7 @@ namespace Backend.Controllers.Api
             _mapper = mapper;
         }
 
+        [Authorize(Roles = RoleModel.Admin + ", " + RoleModel.User)]
         [HttpGet("{messageId}")]
         public IActionResult GetMessage(string messageId)
         {
@@ -32,6 +35,7 @@ namespace Backend.Controllers.Api
             return Ok(_mapper.Map<MessageViewModel>(message));
         }
 
+        [Authorize(Roles = RoleModel.Admin)]
         [HttpPost("")]
         public async Task<IActionResult> CreateMessage([FromBody, Bind("Text", "CatalogId", "Subject")]MessageViewModel model)
         {
@@ -47,6 +51,7 @@ namespace Backend.Controllers.Api
             return Created("", _mapper.Map<MessageViewModel>(message));
         }
 
+        [Authorize(Roles = RoleModel.Admin)]
         [HttpPut("{messageId}")]
         public async Task<ActionResult> EditMessage(string messageId,[FromBody, Bind("Text", "CatalogId", "Subject")]MessageViewModel model)
         {
@@ -62,6 +67,7 @@ namespace Backend.Controllers.Api
             return Ok(_mapper.Map<MessageViewModel>(message));
         }
 
+        [Authorize(Roles = RoleModel.Admin)]
         [HttpDelete("{messageId}")]
         public async Task<ActionResult> DeleteMessage(string messageId)
         {
