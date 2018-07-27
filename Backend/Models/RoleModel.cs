@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Models
 {
-    public class RoleModel
+    public static class RoleModel
     {
         public const string Admin = "ADMIN";
         public const string User = "USER";

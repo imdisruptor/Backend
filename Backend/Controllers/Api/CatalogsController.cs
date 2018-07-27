@@ -7,12 +7,16 @@ using Backend.Models;
 using Backend.Models.Entities;
 using Backend.Services.Interfaces;
 using Backend.ViewModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers.Api
 {
-    [Route("[controller]")]
+    [ApiVersion("1.0")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Produces("application/json")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class CatalogsController : Controller
     {
         private readonly ICatalogService _catalogService;

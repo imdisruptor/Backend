@@ -7,14 +7,17 @@ using Backend.Models;
 using Backend.Models.Entities;
 using Backend.Services.Interfaces;
 using Backend.ViewModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers.Api
 {
-    //[Produces("application/json")]
-    [Route("[controller]")]
+    [ApiVersion("1.0")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Produces("application/json")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class MessagesController : Controller
     {
         private readonly ICatalogService _catalogService;
